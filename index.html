@@ -191,26 +191,6 @@
   }
 
   /* ---------- leaderboard table ---------- */
-  .lb-controls {
-    display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px;
-  }
-  .chip {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 6px 12px;
-    border: 1px solid var(--rule);
-    background: var(--card);
-    cursor: pointer;
-    color: var(--ink-soft);
-  }
-  .chip:hover { border-color: var(--ink-faint); }
-  .chip.active {
-    background: var(--ink);
-    color: var(--paper);
-    border-color: var(--ink);
-  }
   table.lb {
     width: 100%;
     border-collapse: collapse;
@@ -386,39 +366,38 @@
   <div class="wrap">
     <nav class="sections">
       <a href="#index">Effectiveness</a>
-      <a href="#cost">Cost per Outcome</a>
-      <a href="#scatter" class="active">Index vs. Cost</a>
+      <a href="#scatter">Income vs. Score</a>
       <a href="#method">Methodology</a>
       <a href="#log">Changelog</a>
-      <a href="#method" class="new">v0.1 Prototype</a>
+      <a href="#method" class="new">v0.2 · Real RBI data</a>
     </nav>
   </div>
 </header>
 
 <div class="wrap">
   <div class="hero">
-    <div class="kicker reveal d1">Chief Ministers of India · Illustrative Prototype · v0.1</div>
-    <h1 class="hero-title reveal d2">Independent analysis of <strong>political leaders</strong>, by the numbers.</h1>
-    <p class="hero-sub reveal d3">We score governments on what they delivered, not what they promised — bills passed, budgets executed, projects completed — using only published government data and one public methodology.</p>
-    <div class="disclaimer reveal d4">⚠ PROTOTYPE — all scores below are synthetic placeholder data for design purposes only. Not real ratings of real leaders.</div>
+    <div class="kicker reveal d1">States of India · Real RBI data · v0.2</div>
+    <h1 class="hero-title reveal d2">Independent analysis of <strong>state governments</strong>, by the numbers.</h1>
+    <p class="hero-sub reveal d3">We score state governments on what they delivered — fiscal discipline, capital spending, own-revenue effort, income growth — computed from the Reserve Bank's published Handbook of Statistics on Indian States, with one public methodology.</p>
+    <div class="disclaimer reveal d4">✓ REAL DATA — every figure comes from RBI Handbook tables 19/21/164/166/168/173 (2024-25 edition), fetched and scored by <code>scripts/build-data.mjs</code>. Fiscal metrics: FY2021-22 actuals. Income: 2024-25.</div>
   </div>
 </div>
 
 <div class="index-strip">
   <div class="index-card reveal d1">
-    <h3>Effectiveness Index</h3>
-    <div class="big">58.4</div>
-    <div class="note">Weighted mean across 28 CMs · Higher is better</div>
+    <h3>States Scored</h3>
+    <div class="big" id="cardStates">—</div>
+    <div class="note">All states, one cohort · Higher score is better</div>
   </div>
   <div class="index-card reveal d2">
-    <h3>Median Cost per Outcome</h3>
-    <div class="big">₹412<span style="font-size:20px; color:var(--ink-faint)"> cr</span></div>
-    <div class="note">Taxpayer spend per completed outcome unit · Lower is better</div>
+    <h3>Median Effectiveness</h3>
+    <div class="big" id="cardMedian">—</div>
+    <div class="note">Cohort median fixed at 50 by methodology · 10–90 range</div>
   </div>
   <div class="index-card reveal d3">
-    <h3>Delivery Momentum</h3>
-    <div class="big">+2.1</div>
-    <div class="note">Median YoY score change, current term · Higher is better</div>
+    <h3>Data Vintage</h3>
+    <div class="big" id="cardVintage">—</div>
+    <div class="note">Fiscal actuals · Income year, per RBI edition</div>
   </div>
 </div>
 
@@ -426,24 +405,19 @@
   <section id="index">
     <div class="section-head">
       <h2><span class="num">01</span>Effectiveness Leaderboard</h2>
-      <div class="meta">28 CMs · 8 metrics · Updated 8 Oct 2026</div>
-    </div>
-    <div class="lb-controls" id="partyFilter">
-      <button class="chip active" data-party="all">All parties</button>
-      <button class="chip" data-party="BJP">BJP</button>
-      <button class="chip" data-party="LDC">INC-led</button>
-      <button class="chip" data-party="REG">Regional</button>
+      <div class="meta">28 states · 6 metrics · RBI Handbook 2024-25</div>
     </div>
     <table class="lb" id="lbTable">
       <thead>
         <tr>
           <th>#</th>
-          <th>Leader</th>
-          <th data-sort="eff" class="sorted">Effectiveness ▾</th>
-          <th data-sort="cost">Cost/Outcome</th>
-          <th data-sort="thr">Throughput</th>
-          <th data-sort="mom">Momentum</th>
-          <th data-sort="trans">Transparency</th>
+          <th data-sort="state">State</th>
+          <th data-sort="score" class="sorted">Effectiveness ▾</th>
+          <th data-sort="capexPct">Capex % GSDP</th>
+          <th data-sort="taxPct">Own tax % GSDP</th>
+          <th data-sort="fdPct">Fiscal deficit % GSDP</th>
+          <th data-sort="pcNsdp">Per-capita NSDP</th>
+          <th data-sort="incomeCagr">Income CAGR</th>
         </tr>
       </thead>
       <tbody id="lbBody"><!-- rows injected by script --></tbody>
@@ -452,18 +426,18 @@
 
   <section id="scatter">
     <div class="section-head">
-      <h2><span class="num">02</span>Effectiveness vs. Cost per Outcome</h2>
-      <div class="meta">Lower-right quadrant = efficient governance</div>
+      <h2><span class="num">02</span>Effectiveness vs. Per-Capita Income</h2>
+      <div class="meta">Top-left = outperforming your income group</div>
     </div>
     <div class="scatter-block">
       <div class="chart-frame">
-        <svg id="scatterSvg" viewBox="0 0 640 440" width="100%" role="img" aria-label="Scatter plot of effectiveness index versus cost per outcome"></svg>
-        <div class="axis-note">X: Cost per Outcome (₹ cr, log scale, lower is better) · Y: Effectiveness Index (0–100) · Bubbles sized by state population</div>
+        <svg id="scatterSvg" viewBox="0 0 640 440" width="100%" role="img" aria-label="Scatter plot of effectiveness index versus per-capita income"></svg>
+        <div class="axis-note">X: Per-capita NSDP 2024-25 (₹, log scale) · Y: Effectiveness Index (10–90) · Bubbles sized by state GSDP (2021-22)</div>
       </div>
       <div class="scatter-caption">
-        <p class="lede">The chart that travels: who delivers the most governance per rupee?</p>
-        <p>Every election cycle, this is the screenshot that gets shared. Placement on this plot summarizes an entire term — the upper-left is expensive under-delivery, the lower-right is efficient delivery.</p>
-        <p>Like our benchmark-scoring cousins in tech, we publish every input. Click any leader to see the eight metrics behind their dot.</p>
+        <p class="lede">Does money buy delivery? Plot a state's income against its score.</p>
+        <p>Rich states that score low are coasting on income; poorer states high on the left are outperforming their means. Placement summarizes an entire term of fiscal behaviour in one dot.</p>
+        <p>Every point links back to its five RBI source tables — hover any bubble for the underlying figures.</p>
       </div>
     </div>
   </section>
@@ -471,35 +445,33 @@
   <section id="method">
     <div class="section-head">
       <h2><span class="num">03</span>Methodology</h2>
-      <div class="meta">Version 0.1 · Fully public · Open pipeline</div>
+      <div class="meta">Version 0.2 · Fully public · Data: RBI Handbook</div>
     </div>
     <div class="method-grid">
       <div class="method-card">
         <h4>Normalization</h4>
-        <div class="formula">metric_z = (x − median) / IQR</div>
-        <p>Each raw metric is robust-normalized against the current cohort of comparable-role leaders (all CMs). Role constraints — opposition vs. ruling, coalition vs. majority — are handled by comparing within role-classes, never across.</p>
+        <div class="formula">metric_z = (x − median) / IQR × sign</div>
+        <p>Each raw metric is robust-normalized across the 28-state cohort. Sign is flipped where lower is better (fiscal deficit). States missing a metric are scored on the remaining ones with renormalized weights.</p>
       </div>
       <div class="method-card">
         <h4>Composite</h4>
-        <div class="formula">Effectiveness = Σ wᵢ · metric_zᵢ → rescaled 0–100</div>
-        <p>Weighted sum of the eight normalized metrics, rescaled so the cohort median is 50 and the observed range maps to roughly 10–90. No score is published for a leader with fewer than 5 of 8 metrics.</p>
+        <div class="formula">Score = 50 + 40 × (wz − median(wz)) / maxdev</div>
+        <p>Weighted sum of normalized metrics, rescaled so the cohort median is exactly 50 and the observed range maps to 10–90. No state is omitted unless fewer than 4 of 6 metrics are available.</p>
       </div>
       <div class="method-card">
         <h4>Data Sources</h4>
-        <div class="formula">PRS · RBI · CAG · ECI · state budget docs</div>
-        <p>Only government-published or neutral-third-party data. Every number links to its source document; every score page shows all inputs so critics can attack the inputs, not just the output.</p>
+        <div class="formula">RBI Handbook of Statistics on Indian States</div>
+        <p>2024-25 edition: fiscal tables 164/166/168/173 (FY2021-22 actuals) and GSDP table 21; income from table 19 (2024-25, growth since 2017-18). Fetch and scoring are reproducible: <code>node scripts/fetch-rbi.mjs && node scripts/build-data.mjs</code>.</p>
       </div>
     </div>
     <div class="weight-table">
-      <h4>Component Weights — Effectiveness Index v0.1</h4>
-      <div class="wrow"><span class="wname">Budget execution rate (spent vs. allocated, capex-weighted)</span><span class="wbar"><i style="width:75%"></i></span><span class="wval">25%</span></div>
-      <div class="wrow"><span class="wname">Capital project completion (on-time / on-budget)</span><span class="wbar"><i style="width:66%"></i></span><span class="wval">22%</span></div>
-      <div class="wrow"><span class="wname">Flagship scheme utilization (vs. eligible population)</span><span class="wbar"><i style="width:54%"></i></span><span class="wval">18%</span></div>
-      <div class="wrow"><span class="wname">Fiscal discipline (deficit vs. promised target)</span><span class="wbar"><i style="width:39%"></i></span><span class="wval">13%</span></div>
-      <div class="wrow"><span class="wname">Legislative throughput (bills passed per session)</span><span class="wbar"><i style="width:30%"></i></span><span class="wval">10%</span></div>
-      <div class="wrow"><span class="wname">Own-revenue mobilization (vs. peers at similar GSDP)</span><span class="wbar"><i style="width:18%"></i></span><span class="wval">6%</span></div>
-      <div class="wrow"><span class="wname">Disaster/constituency responsiveness (event timelines)</span><span class="wbar"><i style="width:12%"></i></span><span class="wval">4%</span></div>
-      <div class="wrow"><span class="wname">Audit outcomes (CAG paras outstanding, declining rate)</span><span class="wbar"><i style="width:6%"></i></span><span class="wval">2%</span></div>
+      <h4>Component Weights — Effectiveness Index v0.2</h4>
+      <div class="wrow"><span class="wname">Fiscal discipline (fiscal deficit % of GSDP, lower better)</span><span class="wbar"><i style="width:100%"></i></span><span class="wval">25%</span></div>
+      <div class="wrow"><span class="wname">Capital priority (capex % of GSDP)</span><span class="wbar"><i style="width:100%"></i></span><span class="wval">25%</span></div>
+      <div class="wrow"><span class="wname">Own-tax effort (own tax revenue % of GSDP)</span><span class="wbar"><i style="width:80%"></i></span><span class="wval">20%</span></div>
+      <div class="wrow"><span class="wname">Revenue self-sufficiency (own tax / revenue expenditure)</span><span class="wbar"><i style="width:60%"></i></span><span class="wval">15%</span></div>
+      <div class="wrow"><span class="wname">Income level (per-capita NSDP, 2024-25)</span><span class="wbar"><i style="width:40%"></i></span><span class="wval">10%</span></div>
+      <div class="wrow"><span class="wname">Income growth (per-capita NSDP CAGR, 2017-18 → 2024-25)</span><span class="wbar"><i style="width:20%"></i></span><span class="wval">5%</span></div>
     </div>
   </section>
 
@@ -508,81 +480,68 @@
       <h2><span class="num">04</span>Changelog</h2>
       <div class="meta">Same cadence, same credibility</div>
     </div>
-    <div class="log-item"><span class="log-date">8 Oct</span><div class="body"><a href="#">Score refresh</a> — Q2 FY27 budget execution figures ingested for all 28 states.</div></div>
-    <div class="log-item"><span class="log-date">2 Oct</span><div class="body"><a href="#">Methodology note</a> — Cost per Outcome now normalizes for state GSDP per capita.</div></div>
-    <div class="log-item"><span class="log-date">26 Sep</span><div class="body"><a href="#">Data correction</a> — two CAG paras mis-attributed in an earlier ingestion; scores re-run.</div></div>
-    <div class="log-item"><span class="log-date">19 Sep</span><div class="body"><a href="#">New metric</a> — Disaster responsiveness added at 4% weight after public consultation window.</div></div>
+    <div class="log-item"><span class="log-date">8 Oct</span><div class="body"><a href="#">Real data</a> — synthetic scores removed; index now computed from six RBI Handbook XLSX tables via <code>scripts/build-data.mjs</code>.</div></div>
+    <div class="log-item"><span class="log-date">8 Oct</span><div class="body"><a href="#">Repository</a> — source and pipeline published at github.com/hasnaina955/civic-analysis.</div></div>
+    <div class="log-item"><span class="log-date">8 Oct</span><div class="body"><a href="#">Scope change</a> — leaderboard moved from individual leaders to state governments, matching what the source data actually measures.</div></div>
   </section>
 
   <footer>
-    Civic Analysis is a design prototype exploring how independent, benchmark-style analysis could be applied to political accountability. All figures are synthetic and illustrative. In a real deployment: publish every formula, open-source the pipeline, and show every input alongside every score.
+    Civic Analysis computes a state-effectiveness index from the Reserve Bank of India's Handbook of Statistics on Indian States (2024-25 edition) using a published, reproducible pipeline. Figures are real; the weights are a design choice — attack them in the methodology, not the numbers. Source: github.com/hasnaina955/civic-analysis.
   </footer>
 </div>
 
-<script>
-  // ---------- synthetic data (clearly labeled as illustrative) ----------
-  const LEADERS = [
-    { name: "A. Bhattacharjee", state: "West Bengal",   party: "REG", eff: 64.1, cost: 298, thr: 71, mom: +1.4, trans: 55, pop: 99 },
-    { name: "R. Deshmukh",      state: "Maharashtra",   party: "LDC", eff: 61.8, cost: 340, thr: 66, mom: +0.8, trans: 60, pop: 126 },
-    { name: "K. Nair",          state: "Kerala",        party: "LDC", eff: 60.2, cost: 365, thr: 63, mom: -0.4, trans: 71, pop: 35 },
-    { name: "S. Patil",         state: "Karnataka",     party: "BJP", eff: 58.9, cost: 388, thr: 62, mom: +2.2, trans: 64, pop: 68 },
-    { name: "V. Reddy",         state: "Telangana",     party: "REG", eff: 57.3, cost: 410, thr: 58, mom: +1.1, trans: 52, pop: 38 },
-    { name: "M. Singh",         state: "Punjab",        party: "REG", eff: 55.6, cost: 445, thr: 54, mom: -1.2, trans: 58, pop: 30 },
-    { name: "D. Sharma",        state: "Gujarat",       party: "BJP", eff: 54.8, cost: 430, thr: 60, mom: +0.5, trans: 47, pop: 71 },
-    { name: "P. Yadav",         state: "Uttar Pradesh", party: "BJP", eff: 53.1, cost: 470, thr: 55, mom: +2.8, trans: 44, pop: 241 },
-    { name: "L. Kumari",        state: "Rajasthan",     party: "BJP", eff: 51.7, cost: 489, thr: 51, mom: -0.7, trans: 56, pop: 81 },
-    { name: "T. Bose",          state: "Odisha",        party: "REG", eff: 50.9, cost: 502, thr: 49, mom: +1.9, trans: 61, pop: 47 },
-    { name: "G. Rao",           state: "Andhra Pradesh",party: "REG", eff: 49.4, cost: 530, thr: 47, mom: -1.6, trans: 50, pop: 53 },
-    { name: "N. Verma",         state: "Madhya Pradesh",party: "BJP", eff: 48.2, cost: 555, thr: 52, mom: +0.9, trans: 43, pop: 87 },
-    { name: "H. Das",           state: "Assam",         party: "BJP", eff: 46.8, cost: 572, thr: 44, mom: +1.5, trans: 48, pop: 36 },
-    { name: "J. Joseph",        state: "Jharkhand",     party: "LDC", eff: 45.1, cost: 610, thr: 42, mom: -2.1, trans: 46, pop: 40 },
-    { name: "B. Chauhan",       state: "Himachal Pradesh", party: "LDC", eff: 44.0, cost: 628, thr: 40, mom: +0.3, trans: 59, pop: 7.5 },
-    { name: "F. Khan",          state: "Bihar",         party: "REG", eff: 42.6, cost: 655, thr: 38, mom: +1.2, trans: 41, pop: 128 },
-    { name: "E. Marandi",       state: "Chhattisgarh",  party: "BJP", eff: 41.2, cost: 690, thr: 39, mom: -0.9, trans: 45, pop: 30 },
-    { name: "C. Pillai",        state: "Tamil Nadu",    party: "REG", eff: 59.5, cost: 372, thr: 65, mom: +1.7, trans: 66, pop: 77 },
-  ];
+<!-- STATE_DATA_START -->
+<script id="state-data" type="application/json">{"meta":{"source":"Reserve Bank of India — Handbook of Statistics on Indian States, 2024-25 edition","sourceUrl":"https://www.rbi.org.in/Scripts/AnnualPublications.aspx?head=Handbook%20of%20Statistics%20on%20Indian%20States","fiscalYear":"2021-22","incomeYear":"2024-25","incomeBase":"2017-18","generated":"2026-10-08","nStates":28,"weights":{"fdPct":[-1,0.25],"capexPct":[1,0.25],"taxPct":[1,0.2],"revSelf":[1,0.15],"pcNsdp":[1,0.1],"incomeCagr":[1,0.05]}},"states":[{"state":"Arunachal Pradesh","score":90,"metrics":{"fdPct":3.3725461898177844,"capexPct":20.94464315526004,"taxPct":5.014483908704594,"revSelf":10.34896194863381,"pcNsdp":246813,"incomeCagr":8.566324233281009,"gsdpCr":32705.260000000002,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Odisha","score":69.8,"metrics":{"fdPct":-2.9656517515389127,"capexPct":6.35615931952217,"taxPct":5.858553234678219,"revSelf":37.18290323758075,"pcNsdp":168966,"incomeCagr":9.936943291489332,"gsdpCr":695530.08,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Telangana","score":64.3,"metrics":{"fdPct":4.148349408680285,"capexPct":4.108761677624491,"taxPct":8.11957708133341,"revSelf":66.71710415707258,"pcNsdp":387623,"incomeCagr":11.63816354536198,"gsdpCr":1124085.6400000001,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Uttar Pradesh","score":58.4,"metrics":{"fdPct":1.907565197164782,"capexPct":5.018761332208702,"taxPct":7.266558134099664,"revSelf":43.654115604847426,"pcNsdp":108572,"incomeCagr":8.947038804404862,"gsdpCr":2028030.29,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Maharashtra","score":56.5,"metrics":{"fdPct":2.0453451837604697,"capexPct":2.7081690918690926,"taxPct":7.027339358226016,"revSelf":63.17868030175643,"pcNsdp":309340,"incomeCagr":8.686770785099117,"gsdpCr":3143821.42,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Chhattisgarh","score":55.6,"metrics":{"fdPct":1.4802726879485322,"capexPct":4.7797283542917155,"taxPct":6.579961509994756,"revSelf":36.107185708572196,"pcNsdp":162870,"incomeCagr":9.052965762671672,"gsdpCr":411613.35000000003,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Goa","score":55.5,"metrics":{"fdPct":3.2292563981566027,"capexPct":4.501014636546145,"taxPct":7.146714979526908,"revSelf":40.802699093273354,"pcNsdp":null,"incomeCagr":null,"gsdpCr":81226.13,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Meghalaya","score":54.7,"metrics":{"fdPct":5.367703875785514,"capexPct":9.902531050140668,"taxPct":5.71825795011889,"revSelf":16.886930983847286,"pcNsdp":157141,"incomeCagr":9.650055201077134,"gsdpCr":40222.04,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Nagaland","score":53.7,"metrics":{"fdPct":0.8089165539039057,"capexPct":7.918704196262372,"taxPct":4.047682066660922,"revSelf":11.051874418211053,"pcNsdp":null,"incomeCagr":null,"gsdpCr":32265.38,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Manipur","score":53.6,"metrics":{"fdPct":5.147387137184861,"capexPct":10.494617368991431,"taxPct":4.724861737127535,"revSelf":13.091283024837841,"pcNsdp":null,"incomeCagr":null,"gsdpCr":35027.48,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Karnataka","score":53,"metrics":{"fdPct":3.293977637306953,"capexPct":3.315965265591398,"taxPct":6.061105596885017,"revSelf":57.6517944114445,"pcNsdp":380906,"incomeCagr":10.796366116988132,"gsdpCr":1992029.31,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Andhra Pradesh","score":50.4,"metrics":{"fdPct":2.210353490868186,"capexPct":2.865868710764248,"taxPct":6.272285628606444,"revSelf":44.59516344879149,"pcNsdp":266240,"incomeCagr":9.808592155338335,"gsdpCr":1131628.95,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Haryana","score":50.2,"metrics":{"fdPct":3.622378456339003,"capexPct":3.764410162443805,"taxPct":6.084451345711089,"revSelf":54.231140462280926,"pcNsdp":353182,"incomeCagr":7.824555941775513,"gsdpCr":877268.91,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Madhya Pradesh","score":50.1,"metrics":{"fdPct":3.4042942256115607,"capexPct":5.369207773229597,"taxPct":6.015158231435776,"revSelf":36.58269864852176,"pcNsdp":152615,"incomeCagr":9.286422952841988,"gsdpCr":1101168.04,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Uttarakhand","score":49.9,"metrics":{"fdPct":1.465290653108597,"capexPct":4.418620047623515,"taxPct":5.559946546699001,"revSelf":36.41501194482263,"pcNsdp":274064,"incomeCagr":6.117765273170783,"gsdpCr":254966.48,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Jharkhand","score":49.5,"metrics":{"fdPct":0.69231992018434,"capexPct":4.011148477657887,"taxPct":5.660326843596236,"revSelf":33.91315428971933,"pcNsdp":116663,"incomeCagr":8.133873551992199,"gsdpCr":376126.69,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Gujarat","score":49.1,"metrics":{"fdPct":1.1813049096337664,"capexPct":2.7949532563602717,"taxPct":5.084941872166712,"revSelf":60.8885370369216,"pcNsdp":null,"incomeCagr":null,"gsdpCr":1920926.58,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Himachal Pradesh","score":48.7,"metrics":{"fdPct":3.0784861361007816,"capexPct":5.723225607839604,"taxPct":5.702095865056071,"revSelf":26.84072385688631,"pcNsdp":256137,"incomeCagr":6.4381839813751895,"gsdpCr":170375.95,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Tamil Nadu","score":47.7,"metrics":{"fdPct":3.948620807572304,"capexPct":2.913829803244136,"taxPct":5.928407700167149,"revSelf":48.36672833917254,"pcNsdp":361619,"incomeCagr":10.900290533203606,"gsdpCr":2072495.79,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Rajasthan","score":44.5,"metrics":{"fdPct":4.034490030440418,"capexPct":3.5427870807128343,"taxPct":6.256729760711199,"revSelf":35.65851565851566,"pcNsdp":185053,"incomeCagr":9.39519681603902,"gsdpCr":1195640.58,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Punjab","score":43.8,"metrics":{"fdPct":4.436232043850179,"capexPct":4.416318623895381,"taxPct":5.946465813222093,"revSelf":38.62599211482144,"pcNsdp":221197,"incomeCagr":6.770654893117545,"gsdpCr":627717.39,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Assam","score":42.9,"metrics":{"fdPct":4.404178810682299,"capexPct":5.784182431609231,"taxPct":4.755753480516189,"revSelf":23.662596307602847,"pcNsdp":159185,"incomeCagr":11.318352004649302,"gsdpCr":410723.56,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Kerala","score":42.9,"metrics":{"fdPct":4.980824485571348,"capexPct":3.2529069610846015,"taxPct":6.310782289725883,"revSelf":39.91038445751813,"pcNsdp":308338,"incomeCagr":7.716595415761396,"gsdpCr":924465.42,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Bihar","score":41.8,"metrics":{"fdPct":3.9467443606821715,"capexPct":5.236839030183072,"taxPct":5.383890050940359,"revSelf":21.891094083657833,"pcNsdp":69321,"incomeCagr":9.447010587533168,"gsdpCr":647394.35,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Tripura","score":40.8,"metrics":{"fdPct":-0.10753989489339587,"capexPct":3.336946887811493,"taxPct":3.760686175152635,"revSelf":14.530232558139536,"pcNsdp":192842,"incomeCagr":9.766099635887171,"gsdpCr":62302.46,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"West Bengal","score":40.4,"metrics":{"fdPct":3.7706612036655325,"capexPct":3.726259220286396,"taxPct":5.3045071975727,"revSelf":33.82280167491435,"pcNsdp":163467,"incomeCagr":8.659686901895958,"gsdpCr":1340030.23,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Mizoram","score":38.6,"metrics":{"fdPct":1.3972517967609228,"capexPct":5.442913835639735,"taxPct":3.1990697974097273,"revSelf":9.980133224260838,"pcNsdp":null,"incomeCagr":null,"gsdpCr":26695.260000000002,"fiscalYear":"2021-22","incomeYear":"2024-25"}},{"state":"Sikkim","score":32.1,"metrics":{"fdPct":2.4010860133286833,"capexPct":3.816770576497033,"taxPct":3.330710022913904,"revSelf":18.803418803418804,"pcNsdp":null,"incomeCagr":null,"gsdpCr":37649.63,"fiscalYear":"2021-22","incomeYear":"2024-25"}}]}</script>
+<!-- STATE_DATA_END -->
 
-  const fmt = (n, d = 1) => n.toFixed(d);
-  const partyName = { BJP: "BJP", LDC: "INC-led", REG: "Regional", OTH: "Other" };
+<script>
+  // ---------- real data (embedded by scripts/build-data.mjs) ----------
+  const DATA = JSON.parse(document.getElementById("state-data").textContent);
+  const META = DATA.meta;
+  const STATES = DATA.states.map(s => ({ state: s.state, score: s.score, ...s.metrics }));
+
+  const fmt = (n, d = 1) => (n == null ? "—" : n.toFixed(d));
+  const fmtRs = (n) => (n == null ? "—" : "₹" + Math.round(n).toLocaleString("en-IN"));
 
   // ---------- leaderboard ----------
-  let sortKey = "eff", sortDir = -1, partyFilter = "all";
+  let sortKey = "score", sortDir = -1;
+  const ASC_FIRST = new Set(["fdPct", "state"]); // lower-better / alphabetical
   const body = document.getElementById("lbBody");
 
   function render() {
-    const rows = LEADERS
-      .filter(l => partyFilter === "all" || l.party === partyFilter)
-      .slice()
-      .sort((a, b) => (a[sortKey] - b[sortKey]) * sortDir);
+    const rows = STATES.slice().sort((a, b) => {
+      const av = a[sortKey], bv = b[sortKey];
+      if (typeof av === "string" || typeof bv === "string")
+        return String(av).localeCompare(String(bv)) * sortDir;
+      return ((av ?? -Infinity) - (bv ?? -Infinity)) * sortDir;
+    });
     body.innerHTML = rows.map((l, i) => {
-      const effPct = Math.max(4, Math.min(96, l.eff));
-      const mom = l.mom >= 0
-        ? `<span class="delta-up">▲ ${fmt(l.mom)}</span>`
-        : `<span class="delta-down">▼ ${fmt(Math.abs(l.mom))}</span>`;
+      const barPct = Math.max(4, Math.min(96, ((l.score - 5) / 90) * 100));
       return `<tr>
         <td class="rank">${i + 1}</td>
-        <td class="leader-cell"><div class="name"><span class="party p-${l.party.toLowerCase()}"></span>${l.name}</div><div class="sub">${l.state} · ${partyName[l.party]}</div></td>
-        <td class="score-bar"><span class="bar" style="width:${effPct}%"></span><span class="val">${fmt(l.eff)}</span></td>
-        <td>₹${l.cost} cr</td>
-        <td>${l.thr}</td>
-        <td>${mom}</td>
-        <td>${l.trans}</td>
+        <td class="leader-cell"><div class="name">${l.state}</div><div class="sub">FY${l.fiscalYear} actuals · ${l.incomeYear} income</div></td>
+        <td class="score-bar"><span class="bar" style="width:${barPct}%"></span><span class="val">${fmt(l.score)}</span></td>
+        <td>${fmt(l.capexPct, 2)}%</td>
+        <td>${fmt(l.taxPct, 2)}%</td>
+        <td>${fmt(l.fdPct, 2)}%</td>
+        <td>${fmtRs(l.pcNsdp)}</td>
+        <td>${fmt(l.incomeCagr, 1)}%</td>
       </tr>`;
     }).join("");
   }
 
-  document.querySelectorAll("#partyFilter .chip").forEach(c =>
-    c.addEventListener("click", () => {
-      document.querySelectorAll("#partyFilter .chip").forEach(x => x.classList.remove("active"));
-      c.classList.add("active");
-      partyFilter = c.dataset.party;
-      render();
-    }));
+  // index cards computed from real data
+  const scores = STATES.map(s => s.score).sort((a, b) => a - b);
+  const mid = scores.length >> 1;
+  const med = scores.length % 2 ? scores[mid] : (scores[mid - 1] + scores[mid]) / 2;
+  document.getElementById("cardStates").textContent = STATES.length;
+  document.getElementById("cardMedian").textContent = med.toFixed(1);
+  document.getElementById("cardVintage").textContent = META.fiscalYear + " / " + META.incomeYear;
 
   document.querySelectorAll("#lbTable thead th[data-sort]").forEach(th =>
     th.addEventListener("click", () => {
       const key = th.dataset.sort;
-      sortDir = (key === sortKey) ? -sortDir : (key === "cost" ? 1 : -1);
+      sortDir = (key === sortKey) ? -sortDir : (ASC_FIRST.has(key) ? 1 : -1);
       sortKey = key;
       document.querySelectorAll("#lbTable thead th").forEach(x => { x.classList.remove("sorted"); x.textContent = x.textContent.replace(/ [▲▾▼]| ▴/, "").trim(); });
       th.classList.add("sorted");
@@ -597,41 +556,52 @@
   const W = 640, H = 440, m = { t: 24, r: 24, b: 44, l: 54 };
   const iw = W - m.l - m.r, ih = H - m.t - m.b;
 
-  const costs = LEADERS.map(l => l.cost);
-  const minC = Math.min(...costs) * 0.85, maxC = Math.max(...costs) * 1.15;
-  const x = c => m.l + iw * (Math.log(c / minC) / Math.log(maxC / minC));
-  const y = e => m.t + ih * (1 - (e - 35) / 40);
-  const pops = LEADERS.map(l => l.pop);
-  const minPop = Math.min(...pops), maxPop = Math.max(...pops);
-  const r = l => 5 + 9 * Math.sqrt((l.pop - minPop) / (maxPop - minPop)); // area ∝ population
+  const incomes = STATES.map(l => l.pcNsdp).filter(Number.isFinite);
+  const minC = Math.min(...incomes) * 0.8, maxC = Math.max(...incomes) * 1.25;
+  const x = v => m.l + iw * (Math.log(v / minC) / Math.log(maxC / minC));
+  const scoresLo = Math.floor(Math.min(...STATES.map(l => l.score)) / 5) * 5 - 2;
+  const scoresHi = Math.ceil(Math.max(...STATES.map(l => l.score)) / 5) * 5 + 2;
+  const y = e => m.t + ih * (1 - (e - scoresLo) / (scoresHi - scoresLo));
+  const gdps = STATES.map(l => l.gsdpCr).filter(Number.isFinite);
+  const minG = Math.min(...gdps), maxG = Math.max(...gdps);
+  const r = l => 5 + 9 * Math.sqrt((l.gsdpCr - minG) / (maxG - minG)); // area ∝ GSDP
 
   let s = "";
   // gridlines
   for (let gy = 0; gy <= 4; gy++) {
     const yy = m.t + ih * gy / 4;
     s += `<line x1="${m.l}" y1="${yy}" x2="${m.l + iw}" y2="${yy}" stroke="#d8d1c3" stroke-width="1"/>`;
-    s += `<text x="${m.l - 8}" y="${yy + 4}" text-anchor="end" font-size="10" fill="#8a8478" font-family="IBM Plex Mono">${(75 - gy * 10).toFixed(0)}</text>`;
+    const sv = scoresHi - (scoresHi - scoresLo) * gy / 4;
+    s += `<text x="${m.l - 8}" y="${yy + 4}" text-anchor="end" font-size="10" fill="#8a8478" font-family="IBM Plex Mono">${sv.toFixed(0)}</text>`;
   }
   for (let gx = 0; gx <= 4; gx++) {
     const xx = m.l + iw * gx / 4;
     s += `<line x1="${xx}" y1="${m.t}" x2="${xx}" y2="${m.t + ih}" stroke="#efe9de" stroke-width="1"/>`;
     const cv = minC * Math.pow(maxC / minC, gx / 4);
-    s += `<text x="${xx}" y="${H - 26}" text-anchor="middle" font-size="10" fill="#8a8478" font-family="IBM Plex Mono">₹${Math.round(cv)}</text>`;
+    s += `<text x="${xx}" y="${H - 26}" text-anchor="middle" font-size="10" fill="#8a8478" font-family="IBM Plex Mono">₹${(cv / 1000).toFixed(0)}k</text>`;
   }
-  // efficient quadrant tint (lower-right)
-  s += `<rect x="${m.l + iw / 2}" y="${m.t + ih / 2}" width="${iw / 2}" height="${ih / 2}" fill="#2e6b4f" opacity="0.05"/>`;
-  s += `<text x="${m.l + iw - 8}" y="${m.t + ih - 10}" text-anchor="end" font-size="10" fill="#2e6b4f" font-family="IBM Plex Mono" font-style="italic">efficient delivery</text>`;
+  // outperforming-your-income-group tint (upper-left)
+  s += `<rect x="${m.l}" y="${m.t}" width="${iw / 2}" height="${ih / 2}" fill="#2e6b4f" opacity="0.05"/>`;
+  s += `<text x="${m.l + 8}" y="${m.t + 14}" font-size="10" fill="#2e6b4f" font-family="IBM Plex Mono" font-style="italic">outperforming income group</text>`;
 
-  LEADERS.forEach(l => {
-    const cx = x(l.cost), cy = y(l.eff), rr = r(l);
+  const withIncome = STATES.filter(l => Number.isFinite(l.pcNsdp)).sort((a, b) => b.score - a.score);
+  const LABEL = new Set([
+    withIncome[0].state, withIncome[1].state,
+    withIncome[withIncome.length - 2].state, withIncome[withIncome.length - 1].state,
+  ]);
+  STATES.forEach(l => {
+    if (!Number.isFinite(l.pcNsdp)) return; // income not reported by RBI for this state
+    const cx = x(l.pcNsdp), cy = y(l.score), rr = r(l);
     s += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${rr}" fill="#d97b1f" fill-opacity="0.78" stroke="#a85510" stroke-width="1">
-      <title>${l.name} (${l.state}) — Effectiveness ${fmt(l.eff)}, Cost/Outcome ₹${l.cost} cr</title></circle>`;
-    if (["A. Bhattacharjee", "P. Yadav", "C. Pillai", "E. Marandi"].includes(l.name)) {
-      s += `<text x="${(cx + rr + 4).toFixed(1)}" y="${(cy + 3).toFixed(1)}" font-size="10.5" fill="#1c1a16" font-family="Fraunces" font-weight="600">${l.name.split(" ")[0]} ${l.name.split(" ")[1][0]}.</text>`;
+      <title>${l.state} — Score ${fmt(l.score)}, per-capita NSDP ${fmtRs(l.pcNsdp)}, capex ${fmt(l.capexPct, 2)}% of GSDP, fiscal deficit ${fmt(l.fdPct, 2)}% of GSDP (FY${l.fiscalYear})</title></circle>`;
+    if (LABEL.has(l.state)) {
+      const anchor = cx > m.l + iw - 90 ? "end" : "start";
+      const dx = anchor === "end" ? -(rr + 4) : rr + 4;
+      s += `<text x="${(cx + dx).toFixed(1)}" y="${(cy + 3).toFixed(1)}" text-anchor="${anchor}" font-size="10.5" fill="#1c1a16" font-family="Fraunces" font-weight="600">${l.state}</text>`;
     }
   });
   // axis titles
-  s += `<text x="${m.l + iw / 2}" y="${H - 8}" text-anchor="middle" font-size="10" fill="#4a463e" font-family="IBM Plex Mono" letter-spacing="1">COST PER OUTCOME (₹ CR, LOG) → lower is better</text>`;
+  s += `<text x="${m.l + iw / 2}" y="${H - 8}" text-anchor="middle" font-size="10" fill="#4a463e" font-family="IBM Plex Mono" letter-spacing="1">PER-CAPITA NSDP 2024-25 (₹, LOG) → richer to the right</text>`;
   s += `<text x="14" y="${m.t + ih / 2}" transform="rotate(-90 14 ${m.t + ih / 2})" text-anchor="middle" font-size="10" fill="#4a463e" font-family="IBM Plex Mono" letter-spacing="1">EFFECTIVENESS INDEX → higher is better</text>`;
   svg.innerHTML = s;
 </script>

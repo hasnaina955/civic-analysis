@@ -1,0 +1,459 @@
+{
+  "meta": {
+    "source": "Reserve Bank of India — Handbook of Statistics on Indian States, 2024-25 edition",
+    "sourceUrl": "https://www.rbi.org.in/Scripts/AnnualPublications.aspx?head=Handbook%20of%20Statistics%20on%20Indian%20States",
+    "fiscalYear": "2021-22",
+    "incomeYear": "2024-25",
+    "incomeBase": "2017-18",
+    "generated": "2026-10-08",
+    "nStates": 28,
+    "weights": {
+      "fdPct": [
+        -1,
+        0.25
+      ],
+      "capexPct": [
+        1,
+        0.25
+      ],
+      "taxPct": [
+        1,
+        0.2
+      ],
+      "revSelf": [
+        1,
+        0.15
+      ],
+      "pcNsdp": [
+        1,
+        0.1
+      ],
+      "incomeCagr": [
+        1,
+        0.05
+      ]
+    }
+  },
+  "states": [
+    {
+      "state": "Arunachal Pradesh",
+      "score": 90,
+      "metrics": {
+        "fdPct": 3.3725461898177844,
+        "capexPct": 20.94464315526004,
+        "taxPct": 5.014483908704594,
+        "revSelf": 10.34896194863381,
+        "pcNsdp": 246813,
+        "incomeCagr": 8.566324233281009,
+        "gsdpCr": 32705.260000000002,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Odisha",
+      "score": 69.8,
+      "metrics": {
+        "fdPct": -2.9656517515389127,
+        "capexPct": 6.35615931952217,
+        "taxPct": 5.858553234678219,
+        "revSelf": 37.18290323758075,
+        "pcNsdp": 168966,
+        "incomeCagr": 9.936943291489332,
+        "gsdpCr": 695530.08,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Telangana",
+      "score": 64.3,
+      "metrics": {
+        "fdPct": 4.148349408680285,
+        "capexPct": 4.108761677624491,
+        "taxPct": 8.11957708133341,
+        "revSelf": 66.71710415707258,
+        "pcNsdp": 387623,
+        "incomeCagr": 11.63816354536198,
+        "gsdpCr": 1124085.6400000001,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Uttar Pradesh",
+      "score": 58.4,
+      "metrics": {
+        "fdPct": 1.907565197164782,
+        "capexPct": 5.018761332208702,
+        "taxPct": 7.266558134099664,
+        "revSelf": 43.654115604847426,
+        "pcNsdp": 108572,
+        "incomeCagr": 8.947038804404862,
+        "gsdpCr": 2028030.29,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Maharashtra",
+      "score": 56.5,
+      "metrics": {
+        "fdPct": 2.0453451837604697,
+        "capexPct": 2.7081690918690926,
+        "taxPct": 7.027339358226016,
+        "revSelf": 63.17868030175643,
+        "pcNsdp": 309340,
+        "incomeCagr": 8.686770785099117,
+        "gsdpCr": 3143821.42,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Chhattisgarh",
+      "score": 55.6,
+      "metrics": {
+        "fdPct": 1.4802726879485322,
+        "capexPct": 4.7797283542917155,
+        "taxPct": 6.579961509994756,
+        "revSelf": 36.107185708572196,
+        "pcNsdp": 162870,
+        "incomeCagr": 9.052965762671672,
+        "gsdpCr": 411613.35000000003,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Goa",
+      "score": 55.5,
+      "metrics": {
+        "fdPct": 3.2292563981566027,
+        "capexPct": 4.501014636546145,
+        "taxPct": 7.146714979526908,
+        "revSelf": 40.802699093273354,
+        "pcNsdp": null,
+        "incomeCagr": null,
+        "gsdpCr": 81226.13,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Meghalaya",
+      "score": 54.7,
+      "metrics": {
+        "fdPct": 5.367703875785514,
+        "capexPct": 9.902531050140668,
+        "taxPct": 5.71825795011889,
+        "revSelf": 16.886930983847286,
+        "pcNsdp": 157141,
+        "incomeCagr": 9.650055201077134,
+        "gsdpCr": 40222.04,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Nagaland",
+      "score": 53.7,
+      "metrics": {
+        "fdPct": 0.8089165539039057,
+        "capexPct": 7.918704196262372,
+        "taxPct": 4.047682066660922,
+        "revSelf": 11.051874418211053,
+        "pcNsdp": null,
+        "incomeCagr": null,
+        "gsdpCr": 32265.38,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Manipur",
+      "score": 53.6,
+      "metrics": {
+        "fdPct": 5.147387137184861,
+        "capexPct": 10.494617368991431,
+        "taxPct": 4.724861737127535,
+        "revSelf": 13.091283024837841,
+        "pcNsdp": null,
+        "incomeCagr": null,
+        "gsdpCr": 35027.48,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Karnataka",
+      "score": 53,
+      "metrics": {
+        "fdPct": 3.293977637306953,
+        "capexPct": 3.315965265591398,
+        "taxPct": 6.061105596885017,
+        "revSelf": 57.6517944114445,
+        "pcNsdp": 380906,
+        "incomeCagr": 10.796366116988132,
+        "gsdpCr": 1992029.31,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Andhra Pradesh",
+      "score": 50.4,
+      "metrics": {
+        "fdPct": 2.210353490868186,
+        "capexPct": 2.865868710764248,
+        "taxPct": 6.272285628606444,
+        "revSelf": 44.59516344879149,
+        "pcNsdp": 266240,
+        "incomeCagr": 9.808592155338335,
+        "gsdpCr": 1131628.95,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Haryana",
+      "score": 50.2,
+      "metrics": {
+        "fdPct": 3.622378456339003,
+        "capexPct": 3.764410162443805,
+        "taxPct": 6.084451345711089,
+        "revSelf": 54.231140462280926,
+        "pcNsdp": 353182,
+        "incomeCagr": 7.824555941775513,
+        "gsdpCr": 877268.91,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Madhya Pradesh",
+      "score": 50.1,
+      "metrics": {
+        "fdPct": 3.4042942256115607,
+        "capexPct": 5.369207773229597,
+        "taxPct": 6.015158231435776,
+        "revSelf": 36.58269864852176,
+        "pcNsdp": 152615,
+        "incomeCagr": 9.286422952841988,
+        "gsdpCr": 1101168.04,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Uttarakhand",
+      "score": 49.9,
+      "metrics": {
+        "fdPct": 1.465290653108597,
+        "capexPct": 4.418620047623515,
+        "taxPct": 5.559946546699001,
+        "revSelf": 36.41501194482263,
+        "pcNsdp": 274064,
+        "incomeCagr": 6.117765273170783,
+        "gsdpCr": 254966.48,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Jharkhand",
+      "score": 49.5,
+      "metrics": {
+        "fdPct": 0.69231992018434,
+        "capexPct": 4.011148477657887,
+        "taxPct": 5.660326843596236,
+        "revSelf": 33.91315428971933,
+        "pcNsdp": 116663,
+        "incomeCagr": 8.133873551992199,
+        "gsdpCr": 376126.69,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Gujarat",
+      "score": 49.1,
+      "metrics": {
+        "fdPct": 1.1813049096337664,
+        "capexPct": 2.7949532563602717,
+        "taxPct": 5.084941872166712,
+        "revSelf": 60.8885370369216,
+        "pcNsdp": null,
+        "incomeCagr": null,
+        "gsdpCr": 1920926.58,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Himachal Pradesh",
+      "score": 48.7,
+      "metrics": {
+        "fdPct": 3.0784861361007816,
+        "capexPct": 5.723225607839604,
+        "taxPct": 5.702095865056071,
+        "revSelf": 26.84072385688631,
+        "pcNsdp": 256137,
+        "incomeCagr": 6.4381839813751895,
+        "gsdpCr": 170375.95,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Tamil Nadu",
+      "score": 47.7,
+      "metrics": {
+        "fdPct": 3.948620807572304,
+        "capexPct": 2.913829803244136,
+        "taxPct": 5.928407700167149,
+        "revSelf": 48.36672833917254,
+        "pcNsdp": 361619,
+        "incomeCagr": 10.900290533203606,
+        "gsdpCr": 2072495.79,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Rajasthan",
+      "score": 44.5,
+      "metrics": {
+        "fdPct": 4.034490030440418,
+        "capexPct": 3.5427870807128343,
+        "taxPct": 6.256729760711199,
+        "revSelf": 35.65851565851566,
+        "pcNsdp": 185053,
+        "incomeCagr": 9.39519681603902,
+        "gsdpCr": 1195640.58,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Punjab",
+      "score": 43.8,
+      "metrics": {
+        "fdPct": 4.436232043850179,
+        "capexPct": 4.416318623895381,
+        "taxPct": 5.946465813222093,
+        "revSelf": 38.62599211482144,
+        "pcNsdp": 221197,
+        "incomeCagr": 6.770654893117545,
+        "gsdpCr": 627717.39,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Assam",
+      "score": 42.9,
+      "metrics": {
+        "fdPct": 4.404178810682299,
+        "capexPct": 5.784182431609231,
+        "taxPct": 4.755753480516189,
+        "revSelf": 23.662596307602847,
+        "pcNsdp": 159185,
+        "incomeCagr": 11.318352004649302,
+        "gsdpCr": 410723.56,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Kerala",
+      "score": 42.9,
+      "metrics": {
+        "fdPct": 4.980824485571348,
+        "capexPct": 3.2529069610846015,
+        "taxPct": 6.310782289725883,
+        "revSelf": 39.91038445751813,
+        "pcNsdp": 308338,
+        "incomeCagr": 7.716595415761396,
+        "gsdpCr": 924465.42,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Bihar",
+      "score": 41.8,
+      "metrics": {
+        "fdPct": 3.9467443606821715,
+        "capexPct": 5.236839030183072,
+        "taxPct": 5.383890050940359,
+        "revSelf": 21.891094083657833,
+        "pcNsdp": 69321,
+        "incomeCagr": 9.447010587533168,
+        "gsdpCr": 647394.35,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Tripura",
+      "score": 40.8,
+      "metrics": {
+        "fdPct": -0.10753989489339587,
+        "capexPct": 3.336946887811493,
+        "taxPct": 3.760686175152635,
+        "revSelf": 14.530232558139536,
+        "pcNsdp": 192842,
+        "incomeCagr": 9.766099635887171,
+        "gsdpCr": 62302.46,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "West Bengal",
+      "score": 40.4,
+      "metrics": {
+        "fdPct": 3.7706612036655325,
+        "capexPct": 3.726259220286396,
+        "taxPct": 5.3045071975727,
+        "revSelf": 33.82280167491435,
+        "pcNsdp": 163467,
+        "incomeCagr": 8.659686901895958,
+        "gsdpCr": 1340030.23,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Mizoram",
+      "score": 38.6,
+      "metrics": {
+        "fdPct": 1.3972517967609228,
+        "capexPct": 5.442913835639735,
+        "taxPct": 3.1990697974097273,
+        "revSelf": 9.980133224260838,
+        "pcNsdp": null,
+        "incomeCagr": null,
+        "gsdpCr": 26695.260000000002,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    },
+    {
+      "state": "Sikkim",
+      "score": 32.1,
+      "metrics": {
+        "fdPct": 2.4010860133286833,
+        "capexPct": 3.816770576497033,
+        "taxPct": 3.330710022913904,
+        "revSelf": 18.803418803418804,
+        "pcNsdp": null,
+        "incomeCagr": null,
+        "gsdpCr": 37649.63,
+        "fiscalYear": "2021-22",
+        "incomeYear": "2024-25"
+      }
+    }
+  ]
+}

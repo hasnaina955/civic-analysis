@@ -1,0 +1,24 @@
+{
+  "name": "civic-analysis-mock",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hasnaina955/civic-analysis.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/hasnaina955/civic-analysis/issues"
+  },
+  "homepage": "https://github.com/hasnaina955/civic-analysis#readme",
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
+}
