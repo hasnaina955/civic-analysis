@@ -230,12 +230,20 @@
     color: var(--ink-faint);
     letter-spacing: 0.05em;
   }
-  .score-bar { position: relative; min-width: 130px; }
-  .score-bar .bar {
-    position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-    height: 6px; background: var(--saffron); z-index: 0;
+  .score-bar { min-width: 150px; }
+  .score-bar .sb-in { display: flex; align-items: center; gap: 10px; }
+  .score-bar .track {
+    position: relative; flex: 1 1 auto; height: 6px;
+    background: var(--paper-2);
   }
-  .score-bar .val { position: relative; z-index: 1; font-weight: 600; }
+  .score-bar .bar {
+    position: absolute; left: 0; top: 0; height: 100%;
+    background: var(--saffron);
+  }
+  .score-bar .val {
+    flex: 0 0 auto; width: 46px; text-align: right;
+    font-weight: 600;
+  }
   .party { display: inline-block; width: 9px; height: 9px; margin-right: 7px; }
   .p-bjp { background: #e06a1f; }
   .p-ldc { background: #2e6b4f; }
@@ -520,7 +528,7 @@
       return `<tr>
         <td class="rank">${i + 1}</td>
         <td class="leader-cell"><div class="name">${l.state}</div><div class="sub">FY${l.fiscalYear} actuals · ${l.incomeYear} income</div></td>
-        <td class="score-bar"><span class="bar" style="width:${barPct}%"></span><span class="val">${fmt(l.score)}</span></td>
+        <td class="score-bar"><div class="sb-in"><span class="track"><span class="bar" style="width:${barPct}%"></span></span><span class="val">${fmt(l.score)}</span></div></td>
         <td>${fmt(l.capexPct, 2)}%</td>
         <td>${fmt(l.taxPct, 2)}%</td>
         <td>${fmt(l.fdPct, 2)}%</td>
